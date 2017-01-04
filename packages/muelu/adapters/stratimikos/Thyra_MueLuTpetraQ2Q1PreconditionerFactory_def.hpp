@@ -421,7 +421,7 @@ namespace Thyra {
     RCP<Matrix> BBt     = Xpetra::MatrixMatrix<SC,LO,GO,NO>::Multiply(*A_21,     false, *A_12,     false, out);
     RCP<Matrix> BBt_abs = Xpetra::MatrixMatrix<SC,LO,GO,NO>::Multiply(*A_21_abs, false, *A_12_abs, false, out);
 
-    SC dropTol = (paramList.get<int>("useFilters") ? 0.06 : 0.00);
+    SC dropTol = (!paramList.get<int>("useFilters") ? 0.00 : paramList.get<double>("tau_1"));
     RCP<Matrix> filteredA = FilterMatrix(*A_11, *A_11,    dropTol);
     RCP<Matrix> filteredB = FilterMatrix(*BBt,  *BBt_abs, dropTol);
 
@@ -697,6 +697,8 @@ namespace Thyra {
         q2q1ParamList.set("dump status", paramList.get<bool>("dump status"));
       if (paramList.isParameter("phase2"))
         q2q1ParamList.set("phase2", paramList.get<bool>("phase2"));
+      if (paramList.isParameter("tau_2"))
+        q2q1ParamList.set("tau_2", paramList.get<double>("tau_2"));
       Q2Q1Fact->SetParameterList(q2q1ParamList);
     }
     Q2Q1Fact->SetFactory("A", AFact);

@@ -918,11 +918,6 @@ ReturnType BlockGmresSolMgr<ScalarType,MV,OP>::solve() {
   TEUCHOS_TEST_FOR_EXCEPTION(!problem_->isProblemSet(),BlockGmresSolMgrLinearProblemFailure,
     "Belos::BlockGmresSolMgr::solve(): Linear problem is not ready, setProblem() has not been called.");
 
-  if (isFlexible_) {
-    TEUCHOS_TEST_FOR_EXCEPTION(problem_->getRightPrec()==Teuchos::null,BlockGmresSolMgrLinearProblemFailure,
-      "Belos::BlockGmresSolMgr::solve(): Linear problem does not have a preconditioner required for flexible GMRES, call setRightPrec().");
-  }
-
   if (!isSTSet_ || (!expResTest_ && !Teuchos::is_null(problem_->getLeftPrec())) ) {
     TEUCHOS_TEST_FOR_EXCEPTION( checkStatusTest(),BlockGmresSolMgrLinearProblemFailure,
       "Belos::BlockGmresSolMgr::solve(): Linear problem and requested status tests are incompatible.");
